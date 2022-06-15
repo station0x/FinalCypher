@@ -1,0 +1,33 @@
+{
+  "title": "City Of Brass Sand",
+  "layout": "Details",
+  "desc": "Theme created using the free City Of Brass art assets",
+  "image": "detail/sample_cob_sand",
+  "actions": [
+    {
+      "type": "CloneSceneAndBuild",
+      "path": "/DungeonArchitect/Samples/DA_Sample_CityOfBrass/Maps/Map_CoB_Outskirt"
+    },
+    {
+      "type": "Video",
+      "path": "https://www.youtube.com/watch?v=1hAsIQGM_BY"
+    },
+	{
+      "type": "LauncherURL",
+	  "path": "https://www.unrealengine.com/marketplace/en-US/product/c93f1fa73dad4adf9a3d09883d8c8dec",
+	  "title": "City of Brass - Environ",
+	  "width": 72
+    },
+	{
+      "type": "LauncherURL",
+	  "path": "https://www.unrealengine.com/marketplace/en-US/product/90cfc029052b431898380e1f0f872bd0",
+	  "title": "City of Brass - Props",
+	  "width": 72
+    },
+    {
+      "type": "Documentation",
+      "path": "https://docs.dungeonarchitect.dev/ue4
+"
+    }
+  ]
+}
