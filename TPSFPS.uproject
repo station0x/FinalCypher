@@ -50,11 +50,6 @@
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/217fdf581b784571af03d3fb6580368f"
 		},
 		{
-			"Name": "DungeonArchitect",
-			"Enabled": true,
-			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/1a4ad2a06f174a26af8a29728241ce42"
-		},
-		{
 			"Name": "PlayFabGSDK",
 			"Enabled": true
 		},
