@@ -1,0 +1,1399 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+
+	Copyright Pandores Marketplace 2022. All Rights Reserved. 
+
+-->
+<root xmlns:android="http://schemas.android.com/apk/res/android">
+	<init>
+		<log text="Firebase init"/>
+    
+		<setString result="ApplicationIdDefaultValue" value="ca-app-pub-3940256099942544~3347511713"/>
+
+        <!-- 
+            Modules to includes or not.
+        -->
+        <setBoolFromProperty result="bEnableFirestore"    ini="Engine" section="/Script/FirebaseFeatures.FirebaseConfig" property="bEnableFirestore"    default="true"/>
+        <setBoolFromProperty result="bEnableDatabase"     ini="Engine" section="/Script/FirebaseFeatures.FirebaseConfig" property="bEnableDatabase"     default="true"/>
+		<setBoolFromProperty result="bEnableAdMob"        ini="Engine" section="/Script/FirebaseFeatures.FirebaseConfig" property="bEnableAdMob"        default="true"/>
+		<setBoolFromProperty result="bEnableAnalytics"    ini="Engine" section="/Script/FirebaseFeatures.FirebaseConfig" property="bEnableAnalytics"    default="true"/>
+		<setBoolFromProperty result="bEnableFunctions"    ini="Engine" section="/Script/FirebaseFeatures.FirebaseConfig" property="bEnableFunctions"    default="true"/>
+		<setBoolFromProperty result="bEnableMessaging"    ini="Engine" section="/Script/FirebaseFeatures.FirebaseConfig" property="bEnableMessaging"    default="true"/>
+		<setBoolFromProperty result="bEnableRemoteConfig" ini="Engine" section="/Script/FirebaseFeatures.FirebaseConfig" property="bEnableRemoteConfig" default="true"/>
+		<setBoolFromProperty result="bEnableStorage"      ini="Engine" section="/Script/FirebaseFeatures.FirebaseConfig" property="bEnableStorage"      default="true"/>
+		<setBoolFromProperty result="bEnableCrashlytics"  ini="Engine" section="/Script/FirebaseFeatures.FirebaseConfig" property="bEnableCrashlytics"  default="true"/>
+		<setBoolFromProperty result="bEnablePerformance"  ini="Engine" section="/Script/FirebaseFeatures.FirebaseConfig" property="bEnablePerformances" default="true"/>
+    
+        <!--
+            General data in .ini files.
+        -->
+		<setBoolFromProperty   result="bEnabled"      ini="Engine" section="Firebase" property="FirebaseFeaturesEnabled" default="true"/>
+		<setStringFromProperty result="ApplicationId" ini="Engine" section="Firebase" property="AdMobApplicationId"      default="ca-app-pub-3940256099942544~3347511713"/>
+
+		<setStringFromProperty result="OverrideAppId" ini="Engine" section="Firebase" property="AndroidAdMobApplicationId" default=""/>
+		
+		<setBoolFromProperty result="bEnablePlayGames" ini="Engine" section="/Script/FirebaseFeatures.FirebaseConfig" property="bEnableGooglePlayGamesSignIn" default="false"/>
+		
+		<!--
+			Permission requested by the native libraries.
+		-->
+		<setBoolFromProperty result="bRequestReadPhoneStatePermission" ini="Engine" section="/Script/FirebaseFeatures.FirebaseConfig" property="bRequestReadPhoneStatePermission" default="true"/>
+		<setBoolFromProperty result="bRequestAccessCoarseLocation"     ini="Engine" section="/Script/FirebaseFeatures.FirebaseConfig" property="bRequestAccessCoarseLocation"     default="true"/>
+
+		
+		<!--
+		    If the override AdMob App ID is set, override it.
+		-->
+		<setBoolIsEqual result="HasNoAppIdOverride" arg1="$S(OverrideAppId)" arg=""/>
+		<if condition="HasNoAppIdOverride">
+			<false>
+				<setString result="ApplicationId" value="$S(OverrideAppId)"/>
+			</false>
+		</if>
+
+		<!--
+			Logs that Play Games Sign In is enabled.
+		-->
+		<if condition="bEnablePlayGames">
+			<true>
+				<log text="Google Play Games is enabled."/>
+			</true>
+		</if>
+		
+		<!-- 
+		    If the setting was correctly set.
+		-->
+        <setBoolIsEqual result="IsApplicationIdNotDefined" arg1="$S(ApplicationId)" arg2="$S(ApplicationIdDefaultValue)"/>
+
+        <if condition="bEnabled">
+	      <true>
+	    	<log text="Firebase Features is enabled."/>
+            <if condition="bEnableAdMob">
+              <true>
+                <if condition="IsApplicationIdNotDefined">
+
+                  <false>
+                    <log text=""/>
+                    <log text="   -> AdMob is enabled, AdMob Application ID is '$S(ApplicationId)', taken from `DefaultEngine.ini`.`Firebase`.`ApplicationId`."/>
+                  </false>
+
+                  <true>
+                    <log text=""/>
+                    <log text=""/>
+                    <log text="               ______________________________________________________________________________________________"></log>
+                    <log text="               |                                                                                            |"></log>
+                    <log text="               |                 ADMOB APPLICATION ID FOR FIREBASE FEATURES IS NOT SET.                     |"></log>
+                    <log text="               |                                                                                            |"></log>
+                    <log text="               |                 Please, set your AdMob application ID in DefaultEngine.ini                 |"></log>
+                    <log text="               |                 to be able to use AdMob:                                                   |"></log>
+                    <log text="               |                                                                                            |"></log>
+                    <log text="               |                 [Firebase]                                                                 |"></log>
+                    <log text="               |                 AdMobApplicationId=&quot;ca-app-pub-XXXXXXXXXXXXXXXX~XXXXXXXXXX&quot;                |"></log>
+                    <log text="               |                                                                                            |"></log>
+                    <log text="               ______________________________________________________________________________________________"></log>
+                    <log text=""/>
+                    <log text=""/>
+                  </true>
+                </if> <!-- IsApplicationIdNotDefined -->      
+              </true>
+              <false>
+                <log text="   -> AdMob is disabled."/>
+              </false>
+            </if> <!-- bAdMob -->
+            
+              <if condition="bEnableCrashlytics">
+                <true>
+                  <log text="   -> Crashlytics is enabled."/>
+                </true>
+                <false>
+                  <log text="   -> Crashlytics is disabled."/>
+                </false>
+              </if>
+
+			  <if condition="bEnablePerformance">
+				  <true>
+					  <log text="   -> Firebase Performance is enabled."/>
+				  </true>
+				  <false>
+					  <log text="   -> Firebase Performance is disabled."/>
+				  </false>
+			  </if>
+            <log text=""/>
+          </true>
+	    </if>
+	</init>
+  
+  <resourceCopies>
+  </resourceCopies>
+  
+  <AARImports>
+		<!-- Replace outdated libraries that might cause conflict with the ones we are using -->
+		<replace find="com.google.android.gms,play-services-base,11.8.0"     with="com.google.android.gms,play-services-base,18.0.1"/>
+        <replace find="com.google.android.gms,play-services-basement,11.8.0" with="com.google.android.gms,play-services-basesement,18.0.1"/>
+	    <replace find="com.google.android.gms,play-services-ads,11.8.0"		 with="com.google.android.gms,play-services-ads,19.8.0"/>
+		<replace find="com.google.android.gms,play-services-auth,11.8.0"	 with="com.google.android.gms,play-services-auth,19.1.0"/>
+        <replace find="com.google.android.gms,play-services-games,11.8.0"	 with="com.google.android.gms,play-services-games,20.0.1"/>
+        <replace find="com.google.android.gms,play-services-nearby,11.8.0"	 with="com.google.android.gms,play-services-nearby,17.0.0"/>
+        <replace find="com.google.android.gms,play-services-plus,11.8.0"	 with="com.google.android.gms,play-services-plus,17.0.0"/>
+        <replace find="com.android.tools.build,gradle,3.5.3"	 			 with="com.android.tools.build,gradle,4.0.0"/>
+  </AARImports>
+
+  <gradleProperties>
+    <insert>
+      android.useAndroidX=true
+      android.enableJetifier=true
+    </insert>
+  </gradleProperties>
+
+  <baseBuildGradleAdditions>
+    <insert>
+		<![CDATA[
+      allprojects {
+        repositories {
+          mavenCentral()
+          google()
+        }
+        
+        def mappings = [
+          'android.support.annotation': 'androidx.annotation',
+          'android.arch.lifecycle': 'androidx.lifecycle',
+          'android.support.v4.app.NotificationCompat': 'androidx.core.app.NotificationCompat',
+          'android.support.v4.app.ActivityCompat': 'androidx.core.app.ActivityCompat',
+          'android.support.v4.content.ContextCompat': 'androidx.core.content.ContextCompat',
+          'android.support.v4.app.NotificationManagerCompat': 'androidx.core.app.NotificationManagerCompat',
+          'android.support.v4.content.FileProvider': 'androidx.core.content.FileProvider',
+          'android.support.v13.app.FragmentCompat': 'androidx.legacy.app.FragmentCompat',
+          'android.arch.lifecycle.Lifecycle': 'androidx.lifecycle.Lifecycle',
+          'android.arch.lifecycle.LifecycleObserver': 'androidx.lifecycle.LifecycleObserver',
+          'android.arch.lifecycle.OnLifecycleEvent': 'androidx.lifecycle.OnLifecycleEvent',
+          'android.arch.lifecycle.ProcessLifecycleOwner': 'androidx.lifecycle.ProcessLifecycleOwner',
+          'AppCompatActivity': 'Activity',
+        ]
+
+        beforeEvaluate { project ->
+          println ""
+          println "Updating to AndroidX:"
+		  try {
+			project.rootProject.projectDir.traverse(type: groovy.io.FileType.FILES, nameFilter: ~/.*\.java$/) { f ->
+			  def content = f.getText('UTF-8')	
+			  mappings.each { entry ->
+				  try {
+			        if (content.contains(entry.key)) {
+			          println " -> Updating ${entry.key.padRight(50)} to ${entry.value.padRight(45)} in file ${f}"
+			          ant.replace(file: f, token: entry.key, value: entry.value)
+			        }
+				  }
+				  catch (Exception ex)
+				  {
+					println "Exception thrown while renaming entry for AndroidX"
+					println "caused by ${f} with entry ${entry}."
+					ex.printStackTrace()
+				  }
+			    }
+			  }
+			}
+			catch (Exception ex)
+			{
+			  println "Exception thrown while updating to AndroidX"
+			  ex.printStackTrace()
+			}
+        }
+        
+        afterEvaluate {
+          repositories {
+            flatDir {
+              dirs  "]]></insert><insertValue value="$S(PluginDir)"/><insert><![CDATA[/../ThirdParty/firebase_cpp_sdk/8.9.0/libs/android/"
+            }
+          }
+        }
+      }
+	  ]]> 
+    </insert>
+  </baseBuildGradleAdditions>
+
+  <androidManifestUpdates>
+	  <if condition="bEnableAdMob">
+	  	<true>
+	  		<if condition="IsApplicationIdNotDefined">
+	  		<false>
+	  			<setElement
+	  			    result="AdMobAppId"
+	  			    value="meta-data" />
+	  			<addAttribute
+	  			    tag="$AdMobAppId"
+	  			    name="android:name"
+	  			    value="com.google.android.gms.ads.APPLICATION_ID" />
+	  			<addAttribute
+	  			    tag="$AdMobAppId"
+	  			    name="android:value"
+	  			    value="$S(ApplicationId)" />
+	  
+	  			<addElement
+	  			    tag="application"
+	  			    name="AdMobAppId" />
+	  		</false>
+	  		<true>
+	  			<setElement
+	  			    result="AdMobAppId"
+	  			    value="meta-data" />
+	  			<addAttribute
+	  			    tag="$AdMobAppId"
+	  			    name="android:name"
+	  			    value="com.google.android.gms.ads.APPLICATION_ID" />
+	  			<addAttribute
+	  			    tag="$AdMobAppId"
+	  			    name="android:value"
+	  			    value="ca-app-pub-3940256099942544~3347511713" />
+	  
+	  			<addElement
+	  			    tag="application"
+	  			    name="AdMobAppId" />
+	  		</true>
+	  		</if>
+	  	</true>  
+	  </if>
+	  
+	  <if condition="bRequestReadPhoneStatePermission">
+		  <false>
+			  <removePermission android:name="android.permission.READ_PHONE_STATE" />
+		  </false>
+	  </if>
+
+	  <if condition="bRequestAccessCoarseLocation">
+		  <false>
+			  <removePermission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+		  </false>
+	  </if>		
+	</androidManifestUpdates>
+
+	<buildscriptGradleAdditions>
+		<if condition="bEnabled">
+			<true>
+				<insert>
+					dependencies {
+						classpath 'com.google.gms:google-services:4.3.10'
+				</insert>
+				<if condition="bEnablePerformance">
+					<true>
+						<insert>
+							classpath 'com.google.firebase:perf-plugin:1.3.1'
+						</insert>
+					</true>
+				</if>
+				<if condition ="bEnableCrashlytics">
+					<true>
+						<insert>
+					        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.8.1'
+						</insert>
+					</true>
+				</if>
+				<insert>
+					}
+				</insert>
+			</true>
+		</if>
+	</buildscriptGradleAdditions>
+
+	<buildGradleAdditions>
+		<if condition="bEnabled">
+			<true>
+				<insert>
+					android {
+                    	compileOptions {
+                    		sourceCompatibility JavaVersion.VERSION_1_8
+                    		targetCompatibility JavaVersion.VERSION_1_8
+                    	}
+                    }
+					
+					project.ext.FirebaseFeatures = true
+					
+					dependencies {
+						implementation fileTree(dir: 'libs', include: ['*.jar'])
+						
+						// App
+						implementation 'com.google.firebase:firebase-analytics:20.0.2'
+						implementation 'com.google.firebase:firebase-iid:21.1.0'
+						implementation 'com.google.android.gms:play-services-plus:17.0.0'
+						
+						// Analytics
+                        implementation 'com.google.firebase:firebase-analytics:20.0.2'
+                        implementation 'com.google.android.gms:play-services-base:18.0.1'
+						
+						// Auth
+                        implementation 'com.google.firebase:firebase-auth:21.0.1'
+						implementation 'com.google.android.gms:play-services-auth:20.1.0'
+						
+						// Dynamic links
+                        implementation 'com.google.firebase:firebase-dynamic-links:21.0.0'
+						
+				</insert>
+				<if condition="bEnableDatabase">
+					<true>
+						<insert>
+							// Database
+							implementation 'com.google.firebase:firebase-database:20.0.3'
+						</insert>
+					</true>
+				</if>
+				<if condition="bEnableFirestore">
+					<true>
+						<insert>
+							// Firestore
+							implementation 'com.google.firebase:firebase-firestore:24.0.1'
+						</insert>
+					</true>
+				</if>
+				<if condition="bEnableStorage">
+					<true>
+						<insert>
+							// Storage
+							implementation 'com.google.firebase:firebase-storage:20.0.0'
+						</insert>
+					</true>
+				</if>
+				<if condition="bEnableMessaging">
+					<true>
+						<insert>
+							// Messaging
+							implementation 'com.google.firebase:firebase-messaging:23.0.0'
+							implementation 'com.google.firebase.messaging.cpp:firebase_messaging_cpp@aar'
+							implementation 'androidx.core:core:1.6.0-alpha03'
+							implementation 'com.google.flatbuffers:flatbuffers-java:1.12.0'
+							implementation 'com.google.android.gms:play-services-base:18.0.1'
+						</insert>
+					</true>
+				</if>
+				<if condition="bEnableRemoteConfig">
+					<true>
+						<insert>
+							// Remote Config
+							implementation 'com.google.firebase:firebase-config:21.0.1'
+							implementation 'com.google.android.gms:play-services-base:18.0.1'
+						</insert>
+					</true>
+				</if>
+				<insert>
+					
+						// Functions
+                        implementation 'com.google.firebase:firebase-functions:20.0.1'
+						
+						// Installations
+                        // implementation 'com.google.firebase:firebase-installations:17.0.0'
+						// implementation 'com.google.android.gms:play-services-base:18.0.1'
+						
+						// Invites
+                        // implementation 'com.google.firebase:firebase-invites:17.0.0'
+						
+						// Performance
+                        // implementation 'com.google.firebase:firebase-perf:20.0.4'
+            
+				</insert>
+				
+				<if condition="bEnableAdMob">
+					<true>
+						<insert>
+						// AdMob
+                        implementation 'com.google.firebase:firebase-ads:19.8.0'
+                        implementation 'com.google.firebase:firebase-analytics:20.0.2'
+                        implementation 'com.google.android.gms:play-services-base:18.0.1'
+						</insert>
+					</true>
+				</if>
+				
+				<if condition="bEnablePerformance">
+					<true>
+						<insert>
+						// Performance
+						implementation 'com.google.firebase:firebase-perf:20.0.4'
+						</insert>
+					</true>
+				</if>
+				
+				<if condition ="bEnableCrashlytics">
+				<true>
+					<insert>
+						implementation 'com.google.firebase:firebase-crashlytics-ndk:18.2.5'
+						implementation 'com.google.firebase:firebase-crashlytics:18.2.5'
+					</insert>
+				</true>
+				</if>
+
+				<!--if condition="bEnablePlayGames">
+					<true>
+						<insert>
+							implementation "com.google.android.gms:play-services-games-v2:+"
+						</insert>
+					</true>
+				</if-->
+				<insert>
+					}
+
+					apply plugin: 'com.android.application'
+					apply plugin: 'com.google.gms.google-services'
+				</insert>
+
+
+				<if condition="bEnablePerformance">
+					<true>
+						<insert>
+							// Performance
+							apply plugin: 'com.google.firebase.firebase-perf'
+						</insert>
+					</true>
+				</if>
+					
+				<if condition ="bEnableCrashlytics">
+					<true>
+					<insert>
+						apply plugin: 'com.google.firebase.crashlytics'
+						android {
+							buildTypes {
+								release {
+									firebaseCrashlytics {
+										unstrippedNativeLibsDir 'src/main/jniLibs'
+										nativeSymbolUploadEnabled true
+									}
+								}
+								debug {
+									firebaseCrashlytics {
+										unstrippedNativeLibsDir 'src/main/jniLibs'
+										nativeSymbolUploadEnabled true
+									}
+								}
+							}
+						}
+					</insert>
+					</true>
+				</if>
+			</true>
+		</if>
+	</buildGradleAdditions>
+  
+  <proguardAdditions>
+    <insert>
+		-keepattributes Signature
+		-keepattributes *Annotation*
+		-keepattributes EnclosingMethod
+		-keepattributes InnerClasses
+		-keep class com.google.android.gms.** { *; }
+		-dontwarn com.google.android.gms.**
+
+		# Gms
+		-keep,includedescriptorclasses public class com.google.android.gms.common.api.PendingResult { *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.common.api.Result { *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.common.api.ResultCallback { *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.common.api.Status { *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.common.ConnectionResult { *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.common.GoogleApiAvailability { *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.common.GoogleApiAvailability{ *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.crash.internal.api.CrashApiImpl { *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.tasks.OnFailureListener { *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.tasks.OnSuccessListener { *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.tasks.Task { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.FirebaseApp{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.FirebaseOptions{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.FirebaseOptions$Builder{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.analytics.FirebaseAnalytics{ *; }
+
+		# Auth
+		-keep,includedescriptorclasses public class com.google.firebase.app.internal.cpp.Log { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.AdditionalUserInfo{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.AuthCredential{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.AuthResult{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.EmailAuthProvider{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.FacebookAuthProvider{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.FirebaseAuth { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.FirebaseAuth{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.FirebaseAuthActionCodeException{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.FirebaseAuth$AuthStateListener { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.FirebaseAuthEmailException{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.FirebaseAuthException{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.FirebaseAuth$IdTokenListener { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.FirebaseAuthInvalidCredentialsException{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.FirebaseAuthInvalidUserException{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.FirebaseAuthUserCollisionException{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.FirebaseAuthWeakPasswordException{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.FirebaseAuthWebException{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.FirebaseUser{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.FirebaseUserMetadata{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.GetTokenResult{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.GithubAuthProvider{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.GoogleAuthProvider{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.OAuthProvider{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.OAuthProvider$Builder{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.OAuthProvider$CredentialBuilder{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.PhoneAuthCredential { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.PhoneAuthCredential{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.PhoneAuthProvider { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.PhoneAuthProvider{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.PhoneAuthProvider$ForceResendingToken { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.PhoneAuthProvider$OnVerificationStateChangedCallbacks { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.PlayGamesAuthProvider{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.SignInMethodQueryResult{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.TwitterAuthProvider{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.UserInfo{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.auth.UserProfileChangeRequest$Builder{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.FirebaseApiNotAvailableException{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.FirebaseException { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.FirebaseException{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.FirebaseNetworkException{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.FirebaseTooManyRequestsException{ *; }
+		-keep,includedescriptorclasses public class java.util.concurrent.TimeUnit{ *; }
+
+		# AdMob
+		-keep,includedescriptorclasses public class com.google.android.gms.ads.AdListener { *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.ads.AdRequest { *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.ads.AdRequest$Builder{ *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.ads.AdSize { *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.ads.AdView { *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.ads.InterstitialAd { *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.ads.MobileAds { *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.ads.MobileAds{ *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.ads.NativeExpressAdView { *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.ads.reward.RewardedVideoAd { *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.ads.reward.RewardedVideoAdListener { *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.ads.reward.RewardItem { *; }
+
+		# Analytics
+		-keep,includedescriptorclasses public class com.google.firebase.analytics.FirebaseAnalytics { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.example.LoggingUtils { * ; }
+
+		# App
+		-keep,includedescriptorclasses public class com.google.android.gms.common.GoogleApiAvailability { *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.crash.internal.api.CrashApiImpl { *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.tasks.OnCanceledListener { *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.tasks.OnFailureListener { *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.tasks.OnSuccessListener { *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.tasks.Task { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.FirebaseApp { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.FirebaseOptions { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.FirebaseOptions$Builder { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.example.LoggingUtils { * ; }
+		-keep,includedescriptorclasses public class com.google.firebase.platforminfo.GlobalLibraryVersionRegistrar { *; }
+		-keep,includedescriptorclasses public class dalvik.system.DexClassLoader { *; }
+
+		# Database
+		-keep,includedescriptorclasses public class com.google.firebase.database.ChildEventListener { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.database.DatabaseError { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.database.DatabaseError{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.database.DatabaseReference{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.database.DataSnapshot { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.database.DataSnapshot{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.database.FirebaseDatabase{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.database.Logger$Level{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.database.MutableData { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.database.MutableData{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.database.OnDisconnect{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.database.Query{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.database.Transaction { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.database.Transaction$Handler { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.database.Transaction$Result { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.database.ValueEventListener { *; }
+
+		# Dynamic Links
+		-keep,includedescriptorclasses public class com.google.android.gms.tasks.OnFailureListener { *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.tasks.OnSuccessListener { *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.tasks.Task { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.app.internal.cpp.Log { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.dynamiclinks.DynamicLink { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.dynamiclinks.DynamicLink$AndroidParameters$Builder { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.dynamiclinks.DynamicLink$Builder { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.dynamiclinks.DynamicLink$GoogleAnalyticsParameters$Builder { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.dynamiclinks.DynamicLink$IosParameters$Builder { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.dynamiclinks.DynamicLink$ItunesConnectAnalyticsParameters$Builder { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.dynamiclinks.DynamicLink$SocialMetaTagParameters$Builder { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.dynamiclinks.FirebaseDynamicLinks { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.dynamiclinks.PendingDynamicLinkData { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.dynamiclinks.ShortDynamicLink { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.dynamiclinks.ShortDynamicLink$Suffix { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.dynamiclinks.ShortDynamicLink$Warning { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.example.LoggingUtils { * ; }
+
+		# Firestore
+		-keep,includedescriptorclasses public class com.google.android.gms.tasks.CancellationTokenSource { * ; }
+		-keep,includedescriptorclasses public class com.google.android.gms.tasks.Continuation { *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.tasks.OnCompleteListener { *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.tasks.Task { *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.tasks.TaskCompletionSource { * ; }
+		-keep,includedescriptorclasses public class com.google.android.gms.tasks.TaskCompletionSource { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.Timestamp { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.example.LoggingUtils { * ; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.Blob { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.CollectionReference { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.DocumentChange { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.DocumentChange$Type { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.DocumentReference { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.DocumentSnapshot { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.DocumentSnapshot$ServerTimestampBehavior { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.EventListener { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.FieldPath { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.FieldValue { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.FirebaseFirestore { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.FirebaseFirestoreException { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.FirebaseFirestoreException$Code { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.FirebaseFirestoreSettings { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.FirebaseFirestoreSettings$Builder { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.GeoPoint { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.ListenerRegistration { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.LoadBundleTask { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.LoadBundleTaskProgress { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.LoadBundleTaskProgress$TaskState { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.MetadataChanges { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.OnProgressListener { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.Query { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.Query$Direction { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.QuerySnapshot { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.SetOptions { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.SnapshotMetadata { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.Source { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.Transaction { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.Transaction$Function { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.WriteBatch { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.internal.cpp.FirestoreTasks { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.internal.cpp.SilentRejectionSingleThreadExecutor { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.firestore.internal.cpp.TransactionFunction { *; }
+
+		# Functions
+		-keep,includedescriptorclasses public class com.google.firebase.functions.FirebaseFunctions{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.functions.FirebaseFunctionsException{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.functions.FirebaseFunctionsException$Code{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.functions.HttpsCallableReference{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.functions.HttpsCallableResult{ *; }
+
+		# Messaging
+		-keep,includedescriptorclasses public class com.google.android.gms.messaging.cpp.DebugLogging { *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.messaging.cpp.ListenerService { *; }
+		-keep,includedescriptorclasses public class com.google.android.gms.messaging.cpp.RegistrationIntentService { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.messaging.cpp.RegistrationIntentService{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.messaging.FirebaseMessaging{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.messaging.RemoteMessage$Builder{ *; }
+		-keep,includedescriptorclasses public class java.lang.IllegalArgumentException{ *; }
+
+		# Remote Config
+		-keep,includedescriptorclasses public class com.google.firebase.remoteconfig.FirebaseRemoteConfig{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.remoteconfig.FirebaseRemoteConfigFetchThrottledException{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.remoteconfig.FirebaseRemoteConfigInfo{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings$Builder{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.remoteconfig.FirebaseRemoteConfigValue{ *; }
+
+		# Storage
+		-keep,includedescriptorclasses public class com.google.firebase.storage.FileDownloadTask$TaskSnapshot{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.storage.FirebaseStorage{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.storage.OnPausedListener { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.storage.OnProgressListener { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.storage.StorageException{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.storage.StorageMetadata{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.storage.StorageMetadata$Builder{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.storage.StorageReference{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.storage.StorageTask{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.storage.StreamDownloadTask { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.storage.StreamDownloadTask$StreamProcessor { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.storage.StreamDownloadTask$TaskSnapshot { *; }
+		-keep,includedescriptorclasses public class com.google.firebase.storage.StreamDownloadTask$TaskSnapshot{ *; }
+		-keep,includedescriptorclasses public class com.google.firebase.storage.UploadTask$TaskSnapshot{ *; }
+		-keep,includedescriptorclasses public class java.lang.IndexOutOfBoundsException{ *; }
+
+		# Google Sign-In
+		-keep class com.google.googlesignin.** { *; }
+		-keepnames class com.google.googlesignin.* { *; }
+		-keep class com.google.android.gms.auth.** { *; }
+		-keepnames class com.google.android.gms.auth.** { *; }
+	</insert>
+  </proguardAdditions>
+
+	<prebuildCopies>
+		<copyFile src="$S(ProjectDir)/Services/google-services.json" dst="$S(BuildDir)/gradle/app/google-services.json" force="true"/>
+		<copyFile src="$S(ProjectDir)/Services/google-services.json" dst="$S(BuildDir)/google-services.json" force="true"/>
+	</prebuildCopies>
+	
+	<gradleCopies>
+		<copyFile src="$S(ProjectDir)/Services/google-services.json" dst="$S(BuildDir)/gradle/app/google-services.json" force="true"/>
+		<copyFile src="$S(ProjectDir)/Services/google-services.json" dst="$S(BuildDir)/google-services.json" force="true"/>
+	</gradleCopies>
+
+	<resourceCopies>
+		<copyFile src="$S(ProjectDir)/Services/google-services.json" dst="$S(BuildDir)/gradle/app/google-services.json" force="true"/>
+		<copyFile src="$S(ProjectDir)/Services/google-services.json" dst="$S(BuildDir)/google-services.json" force="true"/>
+
+		<log text="Build dir is $S(BuildDir)"/>
+	</resourceCopies>
+
+	<gameActivityAllowedRemoteNotificationsAdditions>
+	</gameActivityAllowedRemoteNotificationsAdditions>
+
+  <gameActivityImportAdditions>
+	  <if condition="bEnableMessaging">
+		  <true>
+			  <insert>
+				  <![CDATA[
+import com.google.firebase.messaging.MessageForwardingService;
+				  ]]>
+			  </insert>		  
+		  </true>
+	  </if>
+	  <if condition="bEnabled">
+      <true>
+        <insert>
+			<![CDATA[
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions.Builder;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.games.AnnotatedData;
+import com.google.firebase.installations.FirebaseInstallations;
+import com.google.firebase.installations.InstallationTokenResult;
+				]]>
+			</insert>
+		</true>
+	</if>
+	<if condition ="bEnableCrashlytics">
+		<true>
+			<insert>
+				<![CDATA[
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+				]]>
+			</insert>
+		</true>
+    </if>
+
+	  <if condition ="bEnablePerformance">
+		  <true>
+			  <insert>
+				  <![CDATA[
+import com.google.firebase.perf.FirebasePerformance;
+import com.google.firebase.perf.metrics.Trace;
+				]]>
+			  </insert>
+		  </true>
+	  </if>
+  </gameActivityImportAdditions>
+	
+	<gameActivityClassAdditions>
+		<insert>
+	private final int FirebaseFeatures_SignInCode		= 986543;
+	private final int FirebaseFeatures_LeaderboardUI	= 986544;
+	private native void nativeOnSignInCompleteFb(boolean bSuccess, String errorMessage);
+	private native void nativeOnScoreQueryCompleteFb(boolean bSuccess, String errorMessage, int score);
+	private GoogleSignInOptions signInOptions; 
+	public void AndroidThunk_FirebaseFeatures_signIn(final String serverClientId, final boolean bSkipOnSigned, final boolean bAllowSilentSignIn, final boolean bUsePlayGames)
+	{
+		if (!bUsePlayGames)
+		{
+			android.util.Log.i("FirebaseFeatures", "Google Sign-In launched with AndroidThunk_FirebaseFeatures_signIn().");
+		}
+		else
+		{
+			android.util.Log.i("FirebaseFeatures", "Google Play Games Sign-In launched with AndroidThunk_FirebaseFeatures_signIn().");
+		}
+		
+		android.util.Log.i("FirebaseFeatures", String.format("{ ServerClientID=%s, bSkipOnSigned=%d, bAllowSilentSignIn=%d, bUsePlayGames=%d }", 
+			serverClientId, bSkipOnSigned, bAllowSilentSignIn, bUsePlayGames));
+		
+		if (serverClientId == null || serverClientId.isEmpty())
+		{
+			android.util.Log.i("FirebaseFeatures", "ServerClientId field is empty. IdToken won't be requested.");
+		}
+		
+		GoogleSignInOptions options = bUsePlayGames ? GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN : GoogleSignInOptions.DEFAULT_SIGN_IN;
+		
+		try
+		{
+			signInOptions = serverClientId == null || serverClientId.isEmpty() ? 
+				new GoogleSignInOptions.Builder(options)
+					.requestEmail()
+					.build() :
+				new GoogleSignInOptions.Builder(options)
+					.requestEmail()
+					.requestIdToken(serverClientId)
+					.requestServerAuthCode(serverClientId)
+					.build();
+					
+			final GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+			
+			if (bSkipOnSigned &amp;&amp; account != null &amp;&amp; GoogleSignIn.hasPermissions(account, signInOptions.getScopeArray())) 
+			{
+				android.util.Log.i("FirebaseFeatures", "Sign in skipped: already signed in and bSkipOnSigned is true.");
+				nativeOnSignInCompleteFb(true, null);
+				return;
+			}
+			
+			final GoogleSignInClient signInClient = GoogleSignIn.getClient(this, signInOptions);
+			if (bAllowSilentSignIn)
+			{
+				android.util.Log.i("FirebaseFeatures", "Trying a silent sign in.");
+				signInClient
+					.silentSignIn()
+					.addOnCompleteListener(
+						this,
+						new com.google.android.gms.tasks.OnCompleteListener&lt;GoogleSignInAccount&gt;() 
+						{
+							@Override
+							public void onComplete(com.google.android.gms.tasks.Task&lt;GoogleSignInAccount&gt; task) 
+							{
+								if (task.isSuccessful()) 
+								{
+									android.util.Log.i("FirebaseFeatures", "Signed in silently.");
+									nativeOnSignInCompleteFb(true, null);
+								} 
+								else 
+								{
+									android.util.Log.i("FirebaseFeatures", "Performing full sign in.");
+									Intent intent = signInClient.getSignInIntent();
+									startActivityForResult(intent, FirebaseFeatures_SignInCode);
+								}
+							}
+						});
+			}
+			else
+			{
+				android.util.Log.i("FirebaseFeatures", "Performing full sign in.");
+				Intent intent = signInClient.getSignInIntent();
+				startActivityForResult(intent, FirebaseFeatures_SignInCode);			
+			}
+		}
+		catch (Exception e)
+		{
+			android.util.Log.e("FirebaseFeatures", "Exception thrown during the sign in procedure.");
+			e.printStackTrace();
+			nativeOnSignInCompleteFb(false, e.getMessage());
+		}
+	}
+	public void AndroidThunk_FirebaseFeatures_showLeaderboard(String leaderboardId)
+	{
+		if (!AndroidThunk_FirebaseFeatures_isSigned())
+		{
+			android.util.Log.w("FirebaseFeatures", "Failed to show leaderboard: user is not signed in.");
+			return;
+		}
+		
+		com.google.android.gms.tasks.Task&lt;Intent&gt; leaderboardIntent = com.google.android.gms.games.Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this))
+			.getLeaderboardIntent(leaderboardId);
+		if (leaderboardIntent != null)
+		{
+			leaderboardIntent.addOnSuccessListener(new com.google.android.gms.tasks.OnSuccessListener&lt;Intent&gt;() 
+			{
+				@Override
+				public void onSuccess(Intent intent) 
+				{
+					startActivityForResult(intent, FirebaseFeatures_LeaderboardUI);
+				}
+			});
+		}
+	}
+	public void AndroidThunk_FirebaseFeatures_getLeaderboardScore(String leaderboardId)
+	{
+		if (!AndroidThunk_FirebaseFeatures_isSigned())
+		{
+			android.util.Log.w("FirebaseFeatures", "Failed to show leaderboard: user is not signed in.");	
+			nativeOnScoreQueryCompleteFb(false, "user not signed in", 0);
+			return;
+		}
+		try // Whatever the exception, we want to pass it back to C++.
+		{
+			com.google.android.gms.games.Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this))
+				.loadCurrentPlayerLeaderboardScore(leaderboardId,
+					com.google.android.gms.games.leaderboard.LeaderboardVariant.TIME_SPAN_ALL_TIME, 
+					com.google.android.gms.games.leaderboard.LeaderboardVariant.COLLECTION_PUBLIC)
+				.addOnCompleteListener(new com.google.android.gms.tasks.OnCompleteListener&lt;AnnotatedData&lt;com.google.android.gms.games.leaderboard.LeaderboardScore&gt;&gt;() 
+				{
+				    @Override
+				    public void onComplete(com.google.android.gms.tasks.Task&lt;AnnotatedData&lt;com.google.android.gms.games.leaderboard.LeaderboardScore&gt;&gt; task) 
+					{
+						try
+						{
+							if (task.isSuccessful()) 
+							{
+								if (task.getResult().get() != null)
+								{
+									final int intScore = (int)task.getResult().get().getRawScore();
+									android.util.Log.i("FirebaseFeatures", String.format("Loaded score %d from leaderboard %s.", intScore, leaderboardId));	
+									nativeOnScoreQueryCompleteFb(true, "", intScore);
+								}
+								else
+								{
+									android.util.Log.i("FirebaseFeatures", "No score found for leaderboard " + leaderboardId);	
+									nativeOnScoreQueryCompleteFb(false, "no score", 0);
+								}
+							}	
+							else
+							{
+								android.util.Log.e("FirebaseFeatures", "Failed to get score: " + task.getException().getMessage());	
+								nativeOnScoreQueryCompleteFb(false, task.getException().getMessage(), 0);
+							}
+						}
+						catch (Exception e)
+						{
+							android.util.Log.e("FirebaseFeatures", "Failed to get score: " + e.getMessage());	
+							nativeOnScoreQueryCompleteFb(false, e.getMessage(), 0);						
+						}
+					}
+				});
+			
+		}
+		catch (Exception e)
+		{
+			android.util.Log.e("FirebaseFeatures", "Failed to get score: " + e.getMessage());	
+			nativeOnScoreQueryCompleteFb(false, e.getMessage(), 0);
+		}
+	}
+	public boolean AndroidThunk_FirebaseFeatures_isSigned()
+	{
+		final GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+		
+		// Didn't sign in through AndroidThunk_FirebaseFeatures_signIn(). Don't check for scopes.
+		if (signInOptions == null)
+		{
+			return account != null;
+		}
+		
+		return account != null &amp;&amp; GoogleSignIn.hasPermissions(account, signInOptions.getScopeArray());
+	}
+	public void AndroidThunk_FirebaseFeatures_SubmitScore(String leaderboardId, long score)
+	{
+		if (!AndroidThunk_FirebaseFeatures_isSigned())
+		{
+			android.util.Log.e("FirebaseFeatures", "Failed to submit score: user is not signed.");	
+			return;
+		}
+		
+		android.util.Log.i("FirebaseFeatures", "Submitting score...");
+		
+		com.google.android.gms.games.Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this))
+			.submitScoreImmediate(leaderboardId, score)
+			.addOnCompleteListener(new com.google.android.gms.tasks.OnCompleteListener&lt;com.google.android.gms.games.leaderboard.ScoreSubmissionData&gt;()
+			{
+				@Override
+				public void onComplete(com.google.android.gms.tasks.Task&lt;com.google.android.gms.games.leaderboard.ScoreSubmissionData&gt; task)
+				{
+					if (!task.isSuccessful())
+					{
+						android.util.Log.e("FirebaseFeatures", "Failed to submit score: " + task.getException().getMessage());
+					}
+					else
+					{
+						android.util.Log.i("FirebaseFeatures", "Score submitted.");
+					}
+				}
+			});
+	}
+	public String AndroidThunk_FirebaseFeatures_getServerAuthCode()
+	{
+		try
+		{
+			if (GoogleSignIn.getLastSignedInAccount(this) == null)
+			{
+				android.util.Log.e("FirebaseFeatures", "Failed to get Server Auth Code: no account found.");
+				return null;
+			}
+			
+			final String authCode = GoogleSignIn.getLastSignedInAccount(this).getServerAuthCode();
+			if (authCode == null)
+			{
+				android.util.Log.e("FirebaseFeatures", "getServerAuthCode() returned null.");
+			}
+			else if (authCode.isEmpty())
+			{
+				android.util.Log.e("FirebaseFeatures", "getServerAuthCode() was empty.");
+			}
+			else
+			{
+				android.util.Log.i("FirebaseFeatures", "getServerAuthCode() succeeded.");
+			}
+			return authCode;
+		}
+		catch (Exception e)
+		{
+			android.util.Log.e("FirebaseFeatures", "Exception thrown while getting Server Auth Code: " + e.getMessage());
+		}
+		return null;
+	}
+	public String AndroidThunk_FirebaseFeatures_getIdToken()
+	{
+		try
+		{
+			if (GoogleSignIn.getLastSignedInAccount(this) == null)
+			{
+				android.util.Log.e("FirebaseFeatures", "Failed to get IdToken: no account found.");
+				return null;
+			}
+			
+			final String idToken = GoogleSignIn.getLastSignedInAccount(this).getIdToken();
+			if (idToken == null)
+			{
+				android.util.Log.e("FirebaseFeatures", "getIdToken() returned null.");
+			}
+			else if (idToken.isEmpty())
+			{
+				android.util.Log.e("FirebaseFeatures", "getIdToken() was empty.");
+			}
+			else
+			{
+				android.util.Log.i("FirebaseFeatures", "getIdToken() succeeded.");
+			}
+			return idToken;
+		}
+		catch (Exception e)
+		{
+			android.util.Log.e("FirebaseFeatures", "Exception thrown while getting IdToken: " + e.getMessage());
+		}
+		return null;
+	}
+	public void AndroidThunk_FirebaseFeatures_showAchievementsScreen()
+	{
+		android.util.Log.e("FirebaseFeatures", "Showing achievements screen.");	
+		try
+		{
+			Games.getAchievementsClient(this, GoogleSignIn.getLastSignedInAccount(this))
+				.getAchievementsIntent()
+				.addOnSuccessListener(new com.google.android.gms.tasks.OnSuccessListener&lt;Intent&gt;() 
+				{
+					@Override
+					public void onSuccess(Intent intent) 
+					{
+						final int RC_ACHIEVEMENT_UI = 18923;
+						startActivityForResult(intent, RC_ACHIEVEMENT_UI);
+					}
+				});
+		}
+		catch (Exception e)
+		{
+			android.util.Log.e("FirebaseFeatures", "Failed to show achievements: " + e.getMessage());	
+		}
+	}
+		</insert>
+
+		<insert>
+			<![CDATA[
+	public void AndroidThunk_FirebaseFeatures_signOut()
+	{
+		if (signInOptions != null)
+		{
+			final GoogleSignInClient signInClient = GoogleSignIn.getClient(this, signInOptions);
+			if (signInClient != null)
+			{
+				signInClient.signOut();
+			}
+			signInOptions = null;
+		}
+	}
+	public void AndroidThunk_FirebaseFeatures_nativeLog(int verbosity, String message)
+	{
+		final String key = "FirebaseFeatures C++";
+		switch (verbosity)
+		{
+			case 0: android.util.Log.i(key, message); break;
+			case 1: android.util.Log.w(key, message); break;
+			case 2: android.util.Log.e(key, message); break;
+			default: android.util.Log.d(key, message);
+		}
+	}
+			]]>
+		</insert>
+
+
+		<if condition ="bEnableCrashlytics">
+			<true>
+				<insert>
+					<![CDATA[
+	public void FIR_CL_CrashApplication()
+	{
+		throw new RuntimeException("Firebase - Features: Test Crash");
+	}
+	
+	public void FIR_CL_Log(String message)
+	{
+		FirebaseCrashlytics.getInstance().log(message);
+	}
+	
+	public void FIR_CL_SetUserId(String identifier)
+	{
+		FirebaseCrashlytics.getInstance().setUserId(identifier);
+	}
+	
+	public void FIR_CL_SetCustomKey(String key, boolean value)
+	{
+		FirebaseCrashlytics.getInstance().setCustomKey(key, value);
+	}
+	
+	public void FIR_CL_SetCustomKey(String key, double value)
+	{
+		FirebaseCrashlytics.getInstance().setCustomKey(key, value);
+	}
+	
+	public void FIR_CL_SetCustomKey(String key, float value)
+	{
+		FirebaseCrashlytics.getInstance().setCustomKey(key, value);
+	}
+	
+	public void FIR_CL_SetCustomKey(String key, int value)
+	{
+		FirebaseCrashlytics.getInstance().setCustomKey(key, value);
+	}
+	
+	public void FIR_CL_SetCustomKey(String key, long value)
+	{
+		FirebaseCrashlytics.getInstance().setCustomKey(key, value);
+	}
+	
+	public void FIR_CL_SetCustomKey(String key, String value)
+	{
+		FirebaseCrashlytics.getInstance().setCustomKey(key, value);
+	}
+	
+	public void FIR_CL_SendUnsetReports()
+	{
+		FirebaseCrashlytics.getInstance().sendUnsentReports();
+	}
+	
+	public void FIR_CL_DeleteUnsentReports()
+	{
+		FirebaseCrashlytics.getInstance().deleteUnsentReports();
+	}
+	
+	public boolean FIR_CL_DidCrashOnPreviousExecution()
+	{
+		return FirebaseCrashlytics.getInstance().didCrashOnPreviousExecution();
+	}
+	
+	public void FIR_CL_SetCrashlyticsCollectionEnabled(boolean bEnabled)
+	{
+		FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(bEnabled);
+	}
+	
+	public void FIR_CL_RecordException(String Message)
+	{
+		FirebaseCrashlytics.getInstance().recordException(new Throwable(Message));
+	}
+					]]>
+				</insert>
+			</true>
+		</if>
+
+
+		<if condition ="bEnablePerformance">
+			<true>
+				<insert>
+					<![CDATA[
+	public Trace FIR_PR_NewTrace(String traceName)
+	{
+		return FirebasePerformance.getInstance().newTrace(traceName);
+	}
+	
+	public Trace FIR_PR_StartTrace(String traceName)
+	{
+		return FirebasePerformance.getInstance().startTrace(traceName);
+	}
+	
+	public void FIR_PR_StartTrace(Trace trace)
+	{
+		trace.start();
+	}
+	
+	public void FIR_PR_StopTrace(Trace trace)
+	{
+		trace.stop();
+	}
+	
+	public void FIR_PR_IncrementMetric(Trace trace, String name, long byValue)
+	{
+		trace.incrementMetric(name, byValue);
+	}
+	
+	public long FIR_PR_GetMetricValue(Trace trace, String name)
+	{
+		return trace.getLongMetric(name);
+	}
+	
+	public void FIR_PR_SetMetricValue(Trace trace, String name, long value)
+	{
+		trace.putMetric(name, value);
+	}
+	
+	public void FIR_PR_SetPerformanceCollectionEnabled(boolean bEnabled)
+	{
+		FirebasePerformance.getInstance().setPerformanceCollectionEnabled(bEnabled);
+	}	
+					]]>
+				</insert>
+			</true>
+		</if>
+
+		<insert>
+			<![CDATA[
+	private native void nativeFirInstDeleteCallback(long data, int code, String message);
+	public void FIR_INST_delete(final long callback)
+	{
+		FirebaseInstallations.getInstance().delete()
+			.addOnCompleteListener(new com.google.android.gms.tasks.OnCompleteListener<Void>()
+		{
+			@Override
+			public void onComplete (com.google.android.gms.tasks.Task<Void> task)
+			{
+				if (task.isSuccessful())
+				{
+					nativeFirInstDeleteCallback(callback, 0, null);
+				}
+				else
+				{
+					final Exception exc = task.getException();
+					if (exc == null)
+					{
+						nativeFirInstDeleteCallback(callback, 1, exc.getMessage());
+					}
+					else
+					{
+						nativeFirInstDeleteCallback(callback, -1, "Unknown error.");
+					}
+				}
+			}
+		});
+	}
+	
+	private native void nativeFirInstGetTokenCallback(long data, String token, long expiration, int code, String message);
+	public void FIR_INST_getToken(final boolean bForceRefresh, final long callback)
+	{
+		FirebaseInstallations.getInstance().getToken(bForceRefresh)
+			.addOnCompleteListener(new com.google.android.gms.tasks.OnCompleteListener<InstallationTokenResult>()
+		{
+			@Override
+			public void onComplete (com.google.android.gms.tasks.Task<InstallationTokenResult> task)
+			{
+				if (task.isSuccessful())
+				{
+					InstallationTokenResult result = task.getResult();
+					nativeFirInstGetTokenCallback(callback, result.getToken(), result.getTokenExpirationTimestamp(), 0, null);
+				}
+				else
+				{
+					final Exception exc = task.getException();
+					if (exc == null)
+					{
+						nativeFirInstGetTokenCallback(callback, null, 0, 1, exc.getMessage());
+					}
+					else
+					{
+						nativeFirInstGetTokenCallback(callback, null, 0, -1, "Unknown error.");
+					}
+				}
+			}
+		});
+	}
+	
+	private native void nativeFirInstGetIDCallback(long data, String id, int code, String message);
+	public void FIR_INST_getID(final long callback)
+	{
+		FirebaseInstallations.getInstance().getId()
+			.addOnCompleteListener(new com.google.android.gms.tasks.OnCompleteListener<String>()
+		{
+			@Override
+			public void onComplete (com.google.android.gms.tasks.Task<String> task)
+			{
+				if (task.isSuccessful())
+				{
+					nativeFirInstGetIDCallback(callback, task.getResult(), 0, null);
+				}
+				else
+				{
+					final Exception exc = task.getException();
+					if (exc == null)
+					{
+						nativeFirInstGetIDCallback(callback, null, 1, exc.getMessage());
+					}
+					else
+					{
+						nativeFirInstGetIDCallback(callback, null, -1, "Unknown error.");
+					}
+				}
+			}
+		});
+	}
+			]]>
+		</insert>
+	</gameActivityClassAdditions>
+
+	<gameActivityOnNewIntentAdditions>
+		<if condition="bEnableMessaging">
+			<true>
+				<insert>
+					<![CDATA[
+		// Firebase - Features.
+        // Used to route notifications while the app is closed through FCM.
+        {
+            final Intent message = new Intent(this, MessageForwardingService.class);
+            message.setAction(MessageForwardingService.ACTION_REMOTE_INTENT);
+            message.putExtras(newIntent);
+            message.setData(newIntent.getData());
+            startService(message);
+        }
+				  ]]>
+				</insert>
+			</true>
+		</if>
+	</gameActivityOnNewIntentAdditions>
+	
+	
+	<gameActivityOnActivityResultAdditions>
+		<insert>
+			<![CDATA[
+		if (FirebaseFeatures_SignInCode == requestCode)
+		{
+			android.util.Log.i("FirebaseFeatures", "Received full sign in result.");
+			final GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+			if (result.isSuccess()) 
+			{
+				android.util.Log.i("FirebaseFeatures", "Sign in is successful.");
+				nativeOnSignInCompleteFb(true, null);
+			} 
+			else 
+			{
+				android.util.Log.e("FirebaseFeatures", "Sign in failed.");
+								
+				try 
+				{
+					String message = result.getStatus().getStatusMessage();
+					
+					if (message == null || message.isEmpty()) 
+					{
+						message = result.getStatus().toString();
+					}
+					
+					android.util.Log.e("FirebaseFeatures", String.format("Sign in failed: %d - %s.", result.getStatus().getStatusCode(), message));
+					
+					nativeOnSignInCompleteFb(false, message);
+				}
+				catch (Exception e)
+				{
+					android.util.Log.e("FirebaseFeatures", String.format("Exception while handling sign in result: %s.", e.getMessage()));
+					nativeOnSignInCompleteFb(false, e.getMessage());
+				}
+			}
+		}
+			]]>
+		</insert>
+	</gameActivityOnActivityResultAdditions>
+
+
+	<gameActivityOnCreateAdditions>
+	</gameActivityOnCreateAdditions>
+
+</root>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

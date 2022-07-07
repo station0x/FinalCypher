@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "372436875411",
+    "project_id": "finalcypher-a9ce7",
+    "storage_bucket": "finalcypher-a9ce7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:372436875411:android:87df41c3fd2a8b947fb566",
+        "android_client_info": {
+          "package_name": "com.station0x.finalcypher"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "372436875411-0d764e0ckibfj952stkq2fjute6el3e0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkE02O-LPSxQxBisM2C7EHMJ3oMD0phOE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "372436875411-0d764e0ckibfj952stkq2fjute6el3e0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
