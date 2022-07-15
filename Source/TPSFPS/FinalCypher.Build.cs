@@ -2,9 +2,9 @@
 
 using UnrealBuildTool;
 
-public class TPSFPS : ModuleRules
+public class FinalCypher : ModuleRules
 {
-	public TPSFPS(ReadOnlyTargetRules Target) : base(Target)
+	public FinalCypher(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	

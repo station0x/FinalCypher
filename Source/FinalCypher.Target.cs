@@ -3,14 +3,14 @@
 using UnrealBuildTool;
 using System.Collections.Generic;
 
-public class TPSFPSTarget : TargetRules
+public class FinalCypherTarget : TargetRules
 {
-	public TPSFPSTarget(TargetInfo Target) : base(Target)
+	public FinalCypherTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Game;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
 
-		ExtraModuleNames.AddRange( new string[] { "TPSFPS" } );
+		ExtraModuleNames.AddRange( new string[] { "FinalCypher" } );
 
 	}
 }

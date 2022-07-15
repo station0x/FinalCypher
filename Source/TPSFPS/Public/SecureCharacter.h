@@ -7,7 +7,7 @@
 #include "SecureCharacter.generated.h"
 
 UCLASS()
-class TPSFPS_API ASecureCharacter : public ACharacter
+class FINALCYPHER_API ASecureCharacter : public ACharacter
 {
 	GENERATED_BODY()
 

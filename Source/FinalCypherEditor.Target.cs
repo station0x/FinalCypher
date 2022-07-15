@@ -3,13 +3,13 @@
 using UnrealBuildTool;
 using System.Collections.Generic;
 
-public class TPSFPSEditorTarget : TargetRules
+public class FinalCypherEditorTarget : TargetRules
 {
-	public TPSFPSEditorTarget(TargetInfo Target) : base(Target)
+	public FinalCypherEditorTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
 
-		ExtraModuleNames.AddRange( new string[] { "TPSFPS" } );
+		ExtraModuleNames.AddRange( new string[] { "FinalCypher" } );
 	}
 }
