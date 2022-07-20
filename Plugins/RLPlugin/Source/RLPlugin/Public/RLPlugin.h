@@ -121,6 +121,7 @@ private:
     void SetNormal( RLMaterialData *pMaterialData, UMaterialInstanceConstant* pMaterialInstance, TArray<FString> kTexturesPathList, FString strTexturesFilesGamePathsFbm[2], FString strMaterialName );
     void SetSpecular( RLMaterialData *pMaterialData, UMaterialInstanceConstant* pMaterialInstance, TArray<FString> kTexturesPathList, FString strTexturesFilesGamePathsFbm[2], FString strMaterialName, bool bIsPBR );
     void SetOpacity( RLMaterialData *pMaterialData, UMaterialInstanceConstant* pMaterialInstance, TArray<FString> kTexturesPathList, FString strTexturesFilesGamePathsFbm[2], FString strMaterialName );
+    void SetOpacityAdv( RLMaterialData* pMaterialData, UMaterialInstanceConstant* pMaterialInstance );
     void SetGlow( RLMaterialData *pMaterialData, UMaterialInstanceConstant* pMaterialInstance, TArray<FString> kTexturesPathList, FString strTexturesFilesGamePaths[2], FString strMaterialName );
     void SetBlend( RLMaterialData *pMaterialData, UMaterialInstanceConstant* pMaterialInstance, TArray<FString> kTexturesPathList, FString kTexturesFilesGamePaths[2], FString strMaterialName );
     void SetBlendToHairDepthMap( RLMaterialData *pMaterialData, UMaterialInstanceConstant* pMaterialInstance, TArray<FString> kTexturesPathList, FString kTexturesFilesGamePaths[2], FString strMaterialName );
@@ -151,7 +152,10 @@ private:
     EShaderType GetPbrShaderType( const RLShaderData* pShaderData, FString strMaterialName, FString strBoneType );
     void UpdateWorld( int32 BoneIndex, FTransform ParentWorld, USkeleton* pSkeleton, const TArray<FTransform>& kBoneTransform, TArray<FTransform>& kBoneWorld );
     void CreatePhysicCollisionShape( UPhysicsAsset* pPhysicsAsset, USkeletalMesh* pMesh, USkeleton* pSkeleton, const TMap< FString, TArray<RLPhysicsCollisionShapeData> >& kCollisionShapeMap );
-    void CreatePhysicSoftCloth( UPhysicsAsset* pPhysicsAsset, USkeletalMesh* pMesh, TMap< FString, RLMaterialData >& kMaterialMap );
+    void CreatePhysicSoftCloth( UPhysicsAsset* pPhysicsAsset, 
+                                USkeletalMesh* pMesh, 
+                                const FString& strBoneType,
+                                TMap< FString, RLMaterialData >& kMaterialMap );
 
     TSharedPtr< class FUICommandList > m_kPluginCommands;
     static URig* m_pEngineHumanoidRig;

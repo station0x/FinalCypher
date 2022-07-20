@@ -7,6 +7,7 @@ enum class ENodeType
 {
     None,
     Hair,
+    Brow,
     Accessory
 };
 
