@@ -1,0 +1,15 @@
+FROM ubuntu
+
+USER root
+RUN export DEBIAN_FRONTEND=noninteractive
+RUN apt-get update
+RUN apt-get -yq install libglib2.0-dev libsecret-1-dev
+RUN adduser ue --disabled-password
+USER ue
+
+COPY --chown=ue:ue /Releases/Server/. /home/ue/
+
+EXPOSE 7777/udp
+EXPOSE 7777/tcp
+
+ENTRYPOINT ["/home/ue/LinuxServer/FinalCypherServer.sh", "-log"]
