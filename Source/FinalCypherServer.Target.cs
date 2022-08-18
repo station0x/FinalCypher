@@ -3,12 +3,12 @@
 using UnrealBuildTool;
 using System.Collections.Generic;
 
-public class TPSFPSServerTarget : TargetRules
+public class FinalCypherServerTarget : TargetRules
 {
-    public TPSFPSServerTarget(TargetInfo Target) : base(Target)
+    public FinalCypherServerTarget(TargetInfo Target) : base(Target)
     {
         Type = TargetType.Server;
         DefaultBuildSettings = BuildSettingsVersion.V2;
-        ExtraModuleNames.Add("TPSFPS");
+        ExtraModuleNames.Add("FinalCypher");
     }
 }
