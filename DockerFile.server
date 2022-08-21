@@ -1,15 +1,20 @@
 FROM ubuntu
 
 USER root
+
 RUN export DEBIAN_FRONTEND=noninteractive
 RUN apt-get update
-RUN apt-get -yq install libglib2.0-dev libsecret-1-dev
+RUN apt-get -yq install libglib2.0-dev libsecret-1-dev libcurl4
+
 RUN adduser ue --disabled-password
-USER ue
+
+USER ue:ue
 
 COPY --chown=ue:ue /Releases/Server/. /home/ue/
+# RUN chmod a+x /home/ue/LinuxServer/FinalCypherServer.sh /home/ue/LinuxServer/FinalCypher/Binaries/Linux/FinalCypherServer-Linux-Shipping
 
 EXPOSE 7777/udp
 EXPOSE 7777/tcp
 
 ENTRYPOINT ["/home/ue/LinuxServer/FinalCypherServer.sh", "-log"]
+# run [docker run -p 7777:7777/udp -t fc-server] for binding ports

@@ -9,6 +9,7 @@ public class FinalCypherServerTarget : TargetRules
     {
         Type = TargetType.Server;
         DefaultBuildSettings = BuildSettingsVersion.V2;
+        bUseLoggingInShipping = true;
         ExtraModuleNames.Add("FinalCypher");
     }
 }
