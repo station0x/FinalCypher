@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "{10D35819-436C-EF0D-A24C-41903CB7AB33}",
+	"EngineAssociation": "{2C677716-4890-36B2-6D59-9FBE45D1D4FF}",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -65,6 +65,11 @@
 			"Name": "FirebaseFeatures",
 			"Enabled": true,
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/81111c9d88144ab0968fd8953872a3d8"
+		},
+		{
+			"Name": "AutoSettings",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/fcc480bac77b4373bc6c68f0ae4f9847"
 		}
 	]
 }
