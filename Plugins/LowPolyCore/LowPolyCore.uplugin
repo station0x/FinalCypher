@@ -1,0 +1,26 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "2.0",
+	"FriendlyName": "Low Poly Core",
+	"Description": "Core code for the Low Poly Shooter Pack.",
+	"Category": "Plugins",
+	"CreatedBy": "Infima Games",
+	"CreatedByURL": "https://twitter.com/InfimaGames",
+	"DocsURL": "https://drive.google.com/drive/folders/16dLpStXmwmvnDV2b2GUoeNzIQV7de7_G",
+	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/481f79da1a484bf8b94b2a1635e3edb7",
+	"SupportURL": "mailto:support@infimagames.com",
+	"EngineVersion": "5.0.0",
+	"CanContainContent": false,
+	"Installed": true,
+	"Modules": [
+		{
+			"Name": "LowPolyShooterPack",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"PlatformAllowList": [
+				"Win64"
+			]
+		}
+	]
+}
