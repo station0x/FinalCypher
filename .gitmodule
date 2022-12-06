@@ -1,0 +1,3 @@
+[submodule "FinalCypher-Scripts"]
+    path = Scripts/FinalCypher-Scripts
+    url = https://github.com/station0x/FinalCypher-Scripts
