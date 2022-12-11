@@ -79,6 +79,14 @@
 		{
 			"Name": "EnhancedInput",
 			"Enabled": true
+		},
+		{
+			"Name": "Uiana",
+			"Enabled": true
+		},
+		{
+			"Name": "UnrealPSKPSA",
+			"Enabled": true
 		}
 	]
 }
