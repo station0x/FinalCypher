@@ -4,7 +4,7 @@ FinalCypher servers are dockerized and uploaded to Google Cloud Container Regist
 # A. [Build Server Docker Image] Steps to create server image and push it to container registry
 1. Run command in root with tag name (if not supplied, latest is used, but recommended to version). `docker build -f .\DockerFile.server -t fc-server:[tag] .` f.e `docker build -f .\DockerFile.server -t fc-server:0.2.5 .`
 2. Inspect Images with `docker images`
-3. Create target image with source image using `docker tag fc-server:[tag] gcr.io/finalcypher-a9ce7/fc-server:[tag]` to point to gcr. f.e `docker tag fc-server:0.2.4 gcr.io/finalcypher-a9ce7/fc-server:0.2.4`
+3. Create target image with source image using `docker tag fc-server:[tag] gcr.io/finalcypher-a9ce7/fc-server:[tag]` to point to gcr. f.e `docker tag fc-server:0.2.6 gcr.io/finalcypher-a9ce7/fc-server:0.2.6`
 4. Push image to the container registry using `docker push gcr.io/finalcypher-a9ce7/fc-server:[tag]`
 
 # B. [Deploy Image to GCloud game servers]
