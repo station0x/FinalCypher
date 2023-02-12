@@ -99,6 +99,11 @@
 		{
 			"Name": "LiveLinkControlRig",
 			"Enabled": true
-		}
+		},
+		{
+            "Name": "CompilerBooster",
+            "Enabled": true,
+            "MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/15afae52463a44cb85a3176c003c8fb1"
+        }
 	]
 }
