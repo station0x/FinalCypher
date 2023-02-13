@@ -1,0 +1,31 @@
+{
+	"FileVersion": 3,
+	"Version": 2,
+	"VersionName": "1.1",
+	"FriendlyName": "CompilerBooster",
+	"Description": "Tired of wasting hours of your daily work in lights and shaders compile time? This asset set the CPU priority of the compilers higher than by default.",
+	"Category": "Editor",
+	"CreatedBy": "Corentin Guillaume",
+	"CreatedByURL": "https://www.unrealengine.com/marketplace/en-US/profile/Corentin+Guillaume",
+	"DocsURL": "https://docs.google.com/presentation/d/1P_bprv5AVH2DT36A9c6-8P-na0ArhcjLFnmHV5DjpoI/edit?usp=sharing",
+	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/15afae52463a44cb85a3176c003c8fb1",
+	"SupportURL": "https://www.unrealengine.com/marketplace/en-US/profile/Corentin+Guillaume",
+	"EngineVersion": "4.26.0",
+	"CanContainContent": true,
+	"Installed": true,
+	"Modules": [
+		{
+			"Name": "CompilerBooster",
+			"Type": "Editor",
+			"LoadingPhase": "Default",
+			"WhitelistPlatforms": [
+				"Win64",
+				"Win32"
+			],
+			"BlacklistPlatforms": [
+				"Mac",
+				"Linux"
+			]
+		}
+	]
+}
